@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formation Protection de l'Enfance - AAM</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bleu-nuit: #1a2332;
+            --bleu-ciel: #87CEEB;
+            --bleu-moyen: #4A90E2;
+            --blanc: #FFFFFF;
+            --gris-clair: #F5F8FA;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--gris-clair) 0%, var(--blanc) 100%);
+            color: var(--bleu-nuit);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--bleu-nuit) 0%, var(--bleu-moyen) 100%);
+            color: var(--blanc);
+            padding: 2rem 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .logo-section p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bleu-ciel);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--blanc);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 100px;
+            z-index: 999;
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            gap: 2rem;
+            overflow-x: auto;
+        }
+
+        .nav-item {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-item:hover {
+            background: var(--gris-clair);
+            border-bottom-color: var(--bleu-ciel);
+        }
+
+        .nav-item.active {
+            color: var(--bleu-moyen);
+            border-bottom-color: var(--bleu-moyen);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 250px 1fr 300px;
+            gap: 2rem;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: var(--blanc);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            height: fit-content;
+            position: sticky;
+            top: 180px;
+        }
+
+        .sidebar h3 {
+            color: var(--bleu-nuit);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .module-item {
+            padding: 0.8rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+
+        .module-item:hover {
+            background: var(--gris-clair);
+            border-left-color: var(--bleu-ciel);
+        }
+
+        .module-item.active {
+            background: linear-gradient(90deg, var(--bleu-ciel) 0%, transparent 100%);
+            border-left-color: var(--bleu-moyen);
+            font-weight: 600;
+        }
+
+        .module-item.completed::before {
+            content: "✓ ";
+            color: green;
+            font-weight: bold;
+        }
+
+        /* Main Content */
+        .main-content {
+            background: var(--blanc);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            min-height: 600px;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .module-header {
+            border-left: 4px solid var(--bleu-moyen);
+            padding-left: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .module-header h2 {
+            color: var(--bleu-nuit);
+            margin-bottom: 0.5rem;
+        }
+
+        .module-header .meta {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .section-content {
+            margin-bottom: 2rem;
+        }
+
+        .section-content h3 {
+            color: var(--bleu-moyen);
+            margin: 1.5rem 0 1rem 0;
+            font-size: 1.3rem;
+        }
+
+        .section-content h4 {
+            color: var(--bleu-nuit);
+            margin: 1rem 0 0.5rem 0;
+        }
+
+        .section-content ul, .section-content ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Cards */
+        .info-card {
+            background: linear-gradient(135deg, var(--bleu-ciel) 0%, var(--bleu-moyen) 100%);
+            color: var(--blanc);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+        }
+
+        .warning-card {
+            background: #FFF3CD;
+            border-left: 4px solid #FFC107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+
+        .success-card {
+            background: #D4EDDA;
+            border-left: 4px solid #28A745;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+
+        /* Quiz Section */
+        .quiz-container {
+            background: var(--gris-clair);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+        }
+
+        .quiz-question {
+            margin-bottom: 2rem;
+        }
+
+        .quiz-question h4 {
+            color: var(--bleu-nuit);
+            margin-bottom: 1rem;
+        }
+
+        .quiz-option {
+            background: var(--blanc);
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--bleu-ciel);
+            transform: translateX(5px);
+        }
+
+        .quiz-option.selected {
+            border-color: var(--bleu-moyen);
+            background: linear-gradient(90deg, var(--bleu-ciel) 0%, var(--blanc) 100%);
+        }
+
+        .quiz-option.correct {
+            border-color: #28A745;
+            background: #D4EDDA;
+        }
+
+        .quiz-option.incorrect {
+            border-color: #DC3545;
+            background: #F8D7DA;
+        }
+
+        /* Right Sidebar */
+        .right-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .progress-card, .chat-card, .resources-card {
+            background: var(--blanc);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        }
+
+        .progress-card h3, .chat-card h3, .resources-card h3 {
+            color: var(--bleu-nuit);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .progress-bar-container {
+            background: var(--gris-clair);
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, var(--bleu-ciel) 0%, var(--bleu-moyen) 100%);
+            height: 100%;
+            transition: width 0.5s;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: var(--gris-clair);
+            border-radius: 8px;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--bleu-moyen);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        /* Chat Interface */
+        .chat-messages {
+            height: 300px;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: var(--gris-clair);
+            border-radius: 8px;
+        }
+
+        .chat-message {
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            border-radius: 8px;
+            max-width: 80%;
+        }
+
+        .chat-message.user {
+            background: var(--bleu-moyen);
+            color: var(--blanc);
+            margin-left: auto;
+        }
+
+        .chat-message.formateur {
+            background: var(--blanc);
+            border: 1px solid var(--bleu-ciel);
+        }
+
+        .chat-input-container {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 2px solid var(--gris-clair);
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--bleu-moyen);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--bleu-moyen) 0%, var(--bleu-nuit) 100%);
+            color: var(--blanc);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bleu-ciel);
+            color: var(--bleu-nuit);
+        }
+
+        .btn-success {
+            background: #28A745;
+            color: var(--blanc);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            justify-content: space-between;
+        }
+
+        /* Resources */
+        .resource-item {
+            padding: 1rem;
+            background: var(--gris-clair);
+            border-radius: 8px;
+            margin-bottom: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .resource-item:hover {
+            background: var(--bleu-ciel);
+            transform: translateX(5px);
+        }
+
+        .resource-icon {
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar, .right-sidebar {
+                position: static;
+            }
+        }
+
+        /* Case Study */
+        .case-study {
+            background: var(--gris-clair);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--bleu-moyen);
+        }
+
+        .case-study h4 {
+            color: var(--bleu-nuit);
+            margin-bottom: 1rem;
+        }
+
+        /* Interactive Elements */
+        .accordion {
+            margin: 1rem 0;
+        }
+
+        .accordion-item {
+            background: var(--blanc);
+            border: 1px solid var(--gris-clair);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            padding: 1rem;
+            cursor: pointer;
+            background: var(--gris-clair);
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .accordion-header:hover {
+            background: var(--bleu-ciel);
+        }
+
+        .accordion-content {
+            padding: 1rem;
+            display: none;
+        }
+
+        .accordion-content.active {
+            display: block;
+        }
+
+        .notes-section {
+            background: #FFFACD;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .notes-textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 1rem;
+            border: 2px solid var(--bleu-ciel);
+            border-radius: 8px;
+            font-family: inherit;
+            resize: vertical;
+        }
+
+        .bookmark-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #FFD700;
+        }
+
+        .highlight {
+            background: linear-gradient(transparent 60%, var(--bleu-ciel) 60%);
+            padding: 0 0.2rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo-section">
+                <h1>🛡️ Formation Protection de l'Enfance</h1>
+                <p>Association Aide Médicale - Cameroun 2025</p>
+            </div>
+            <div class="user-section">
+                <span>👤 Utilisateur</span>
+                <button class="btn btn-secondary" onclick="toggleNightMode()">🌙 Mode Nuit</button>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="nav-content">
+            <div class="nav-item active" onclick="showTab('accueil')">🏠 Accueil</div>
+            <div class="nav-item" onclick="showTab('modules')">📚 Modules</div>
+            <div class="nav-item" onclick="showTab('evaluations')">✅ Évaluations</div>
+            <div class="nav-item" onclick="showTab('ressources')">📎 Ressources</div>
+            <div class="nav-item" onclick="showTab('forum')">💬 Forum</div>
+            <div class="nav-item" onclick="showTab('certificat')">🎓 Certification</div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Left Sidebar -->
+        <aside class="sidebar">
+            <h3>📋 Modules de Formation</h3>
+            <div class="module-item active" onclick="loadModule(0)">Introduction</div>
+            <div class="module-item completed" onclick="loadModule(1)">Module 1: Cadre Législatif</div>
+            <div class="module-item" onclick="loadModule(2)">Module 2: Violence Envers Enfants</div>
+            <div class="module-item" onclick="loadModule(3)">Module 3: Identification</div>
+            <div class="module-item" onclick="loadModule(4)">Module 4: Accueil de la Parole</div>
+            <div class="module-item" onclick="loadModule(5)">Module 5: Signalement</div>
+            <div class="module-item" onclick="loadModule(6)">Module 6: Intervention</div>
+            <div class="module-item" onclick="loadModule(7)">Module 7: Coordination</div>
+            <div class="module-item" onclick="loadModule(8)">Module 8: Auto-Soin</div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-section active" id="accueil">
+                <div class="module-header">
+                    <h2>Bienvenue dans la Formation</h2>
+                    <p class="meta">⏱️ Durée totale: 60 heures | 📊 8 modules | 🎯 Certification incluse</p>
+                </div>
+
+                <div class="info-card">
+                    <h3>🎯 Objectifs de la Formation</h3>
+                    <p>Cette formation vous permettra de:</p>
+                    <ul>
+                        <li>✓ Comprendre le cadre législatif camerounais de protection de l'enfant</li>
+                        <li>✓ Reconnaître les différentes formes de violence</li>
+                        <li>✓ Identifier les signes d'abus</li>
+                        <li>✓ Accueillir la parole d'un enfant victime</li>
+                        <li>✓ Maîtriser les protocoles de signalement</li>
+                    </ul>
+                </div>
+
+                <div class="section-content">
+                    <h3>👥 Public Cible</h3>
+                    <div class="accordion">
+                        <div class="accordion-item">
+                            <div class="accordion-header" onclick="toggleAccordion(this)">
+                                🏥 Professionnels de la Santé
+                                <span>▼</span>
+                            </div>
+                            <div class="accordion-content">
+                                <ul>
+                                    <li>Médecins généralistes et pédiatres</li>
+                                    <li>Infirmiers et sages-femmes</li>
+                                    <li>Agents de santé communautaires</li>
+                                    <li>Travailleurs de la santé mentale</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <div class="accordion-header" onclick="toggleAccordion(this)">
+                                🎓 Professionnels de l'Éducation
+                                <span>▼</span>
+                            </div>
+                            <div class="accordion-content">
+                                <ul>
+                                    <li>Enseignants du primaire et secondaire</li>
+                                    <li>Directeurs d'écoles</li>
+                                    <li>Conseillers scolaires</li>
+                                    <li>Éducateurs spécialisés</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <div class="accordion-header" onclick="toggleAccordion(this)">
+                                🤝 Professionnels des Services Sociaux
+                                <span>▼</span>
+                            </div>
+                            <div class="accordion-content">
+                                <ul>
+                                    <li>Travailleurs sociaux</li>
+                                    <li>Agents de protection de l'enfance</li>
+                                    <li>Conseillers familiaux</li>
+                                    <li>Autorités judiciaires et police</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="warning-card">
+                    <strong>⚠️ Prérequis:</strong> Exercice actuel dans un domaine relevant de la santé, l'éducation ou les services sociaux. Engagement envers la confidentialité et l'éthique professionnelle.
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="loadModule(1)">Commencer la Formation →</button>
+                    <button class="btn btn-secondary" onclick="downloadSyllabus()">📥 Télécharger le Programme</button>
+                </div>
+            </div>
+
+            <div class="content-section" id="module-content">
+                <!-- Module content will be loaded here dynamically -->
+            </div>
+        </main>
+
+        <!-- Right Sidebar -->
+        <aside class="right-sidebar">
+            <!-- Progress Card -->
+            <div class="progress-card">
+                <h3>📈 Votre Progression</h3>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" style="width: 25%"></div>
+                </div>
+                <p style="text-align: center; margin-top: 0.5rem;">25% complété</p>
+                
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-value">2/8</div>
+                        <div class="stat-label">Modules</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">15h</div>
+                        <div class="stat-label">Temps passé</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Card -->
+            <div class="chat-card">
+                <h3>💬 Discussion avec Formateur</h3>
+                <div class="chat-messages" id="chatMessages">
+                    <div class="chat-message formateur">
+                        <strong>Formateur:</strong><br>
+                        Bienvenue! N'hésitez pas à poser vos questions sur le contenu de la formation.
+                    </div>
+                </div>
+                <div class="chat-input-container">
+                    <input type="text" class="chat-input" id="chatInput" placeholder="Votre question...">
+                    <button class="btn btn-primary" onclick="sendMessage()">📤</button>
+                </div>
+            </div>
+
+            <!-- Resources Card -->
+            <div class="resources-card">
+                <h3>📚 Ressources Utiles</h3>
+                <div class="resource-item" onclick="openResource('116')">
+                    <span class="resource-icon">📞</span>
+                    Numéro Vert 116
+                </div>
+                <div class="resource-item" onclick="openResource('legislation')">
+                    <span class="resource-icon">⚖️</span>
+                    Textes Législatifs
+                </div>
+                <div class="resource-item" onclick="openResource('contacts')">
+                    <span class="resource-icon">📇</span>
+                    Contacts Utiles
+                </div>
+                <div class="resource-item" onclick="openResource('guide')">
+                    <span class="resource-icon">📖</span>
+                    Guide de Référence
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        // Navigation between tabs
+        function showTab(tabName) {
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            alert(`Navigation vers: ${tabName} (à implémenter)`);
+        }
+
+        // Load module content
+        function loadModule(moduleIndex) {
+            const moduleItems = document.querySelectorAll('.module-item');
+            moduleItems.forEach(item => item.classList.remove('active'));
+            moduleItems[moduleIndex].classList.add('active');
+            
+            const contentSections = document.querySelectorAll('.content-section');
+            contentSections.forEach(section => section.classList.remove('active'));
+            
+            // Example of loading module 1 content
+            if (moduleIndex === 1) {
+                document.getElementById('module-content').innerHTML = `
+                    <div class="module-header">
+                        <h2>Module 1: Cadre Législatif et Contexte Camerounais</h2>
+                        <p class="meta">⏱️ Durée: 4 heures | 📊 Quiz: 10 questions</p>
+                        <button class="bookmark-btn" onclick="bookmarkModule()">⭐</button>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>🎯 Objectifs d'Apprentissage</h3>
+                        <p>À la fin de ce module, vous comprendrez le cadre légal camerounais et vos obligations professionnelles.</p>
+                    </div>
+
+                    <div class="section-content">
+                        <h3>📜 Instruments Internationaux</h3>
+                        <p>Le Cameroun s'est engagé à respecter plusieurs conventions internationales:</p>
+                        
+                        <h4 class="highlight">Convention des Nations Unies Relative aux Droits de l'Enfant (1989)</h4>
+                        <ul>
+                            <li>Protège le droit à la vie, la survie et le développement (Article 6)</li>
+                            <li>Protège la vie privée et l'intégrité physique (Article 16)</li>
+                            <li>Protège contre les abus et la négligence (Article 19)</li>
+                            <li>Reconnaît le droit de l'enfant d'être entendu (Article 12)</li>
+                        </ul>
+
+                        <h4>Charte Africaine des Droits et du Bien-Être de l'Enfant (1990)</h4>
+                        <ul>
+                            <li>Énonce les droits spécifiques des enfants en Afrique</li>
+                            <li>Reconnaît les responsabilités des parents et de l'État</li>
+                            <li>Emphase sur l'intérêt supérieur de l'enfant</li>
+                        </ul>
+                    </div>
+
+                    <div class="case-study">
+                        <h4>📋 Étude de Cas: Violence Physique à l'École</h4>
+                        <p><strong>Situation:</strong> Monsieur Nkolo, enseignant à Douala, remarque qu'Ayouba (8 ans) arrive régulièrement avec des ecchymoses. L'enfant dit que son père le bat quand il rentre tard de l'école.</p>
+                        
+                        <p><strong>Questions de réflexion:</strong></p>
+                        <ol>
+                            <li>Qu'est-ce qui oblige légalement Monsieur Nkolo à signaler?</li>
+                            <li>Quelles sont ses protections légales?</li>
+                            <li>Quels sont les risques de ne pas signaler?</li>
+                        </ol>
+                        <button class="btn btn-secondary" onclick="showCaseAnswer()">Voir la Réponse</button>
+                    </div>
+
+                    <div class="notes-section">
+                        <h4>📝 Vos Notes Personnelles</h4>
+                        <textarea class="notes-textarea" placeholder="Prenez vos notes ici..."></textarea>
+                        <button class="btn btn-success" onclick="saveNotes()">💾 Sauvegarder</button>
+                    </div>
+
+                    <div class="quiz-container">
+                        <h3>✅ Quiz du Module 1</h3>
+                        <div class="quiz-question">
+                            <h4>1. Le numéro vert national pour signaler les abus envers les enfants au Cameroun est:</h4>
+                            <div class="quiz-option" onclick="selectOption(this)">A) 17</div>
+                            <div class="quiz-option" onclick="selectOption(this)">B) 15</div>
+                            <div class="quiz-option" onclick="selectOption(this, true)">C) 116</div>
+                            <div class="quiz-option" onclick="selectOption(this)">D) 115</div>
+                        </div>
+                        <button class="btn btn-primary" onclick="submitQu
